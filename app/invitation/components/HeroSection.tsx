@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
     return (
-        <div className="relative z-10 w-full h-[calc(100vh-200px)] md:h-screen flex items-center justify-center overflow-hidden">
+        <div className="relative z-10 w-full h-screen flex items-center justify-center overflow-hidden">
             {/* Video Background */}
             <video
                 autoPlay
