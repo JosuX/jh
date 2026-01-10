@@ -11,6 +11,7 @@
   --font-eb-garamond: var(--font-eb-garamond);
   --font-oswald: var(--font-oswald);
   --font-italianno: var(--font-italianno);
+  --font-big-shoulders-inline: var(--font-big-shoulders-inline);
 }
 
 @media (prefers-color-scheme: dark) {

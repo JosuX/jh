@@ -111,7 +111,7 @@ const Page = () => {
                 </div>
 
                 {/* White Card Container */}
-                <div className="bg-white rounded-[10px] shadow-[0_1px_4px_0_#F9F9F9] px-11 py-8 w-[clamp(304px,90%,530px)] min-h-[221px] md:min-h-[315px] flex flex-col items-center justify-center">
+                <div className="bg-white rounded-[10px] shadow-[0_1px_4px_0_#F9F9F9] px-11 md:px-16 py-8 md:py-14 w-[clamp(304px,90%,530px)] min-h-[221px] md:min-h-[315px] flex flex-col items-center justify-center">
                     {/* Title */}
                     <h1 className="text-center mb-3 font-eb-garamond text-[clamp(1.125rem,3vw,1.75rem)] font-bold text-[#4a4a4a]">
                         {!guestInfo
@@ -173,11 +173,23 @@ const Page = () => {
                         </button>
                     )}
 
-                    <div className="font-eb-garamond italic text-center text-xs text-[#1E61AE] mt-7">
+                    <div className="font-eb-garamond italic text-center text-xs text-[#1E61AE] mt-7 w-auto md:w-[286px]">
                         Reminder: Your invitation is saved to this device and
                         won’t open on other devices.
                     </div>
                 </div>
+            </div>
+
+            {/* Desktop Bottom Right Logo */}
+            <div className="hidden md:block absolute bottom-10 right-10 z-20 opacity-90 hover:opacity-100 transition-opacity duration-300">
+                <Image
+                    src="/JH WEDDING LOGO - WHITE.png"
+                    alt="J&H Wedding Logo"
+                    width={310}
+                    height={310}
+                    className="w-[310px] h-auto"
+                    priority
+                />
             </div>
         </div>
     );
