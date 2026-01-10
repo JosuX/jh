@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Toaster, toast } from 'sonner'
 import InvitationContent from './InvitationContent'
 
 export default function InvitationPage() {
@@ -14,7 +15,10 @@ export default function InvitationPage() {
       const token = localStorage.getItem('guest_session')
       
       if (!token) {
-        router.push('/')
+        toast.error('Session not found', {
+          description: 'Please enter your guest code first',
+        })
+        setTimeout(() => router.push('/'), 1500)
         return
       }
 
@@ -27,7 +31,10 @@ export default function InvitationPage() {
 
         if (!response.ok) {
           localStorage.removeItem('guest_session')
-          router.push('/')
+          toast.error('Session expired', {
+            description: 'Please enter your guest code again',
+          })
+          setTimeout(() => router.push('/'), 1500)
           return
         }
 
@@ -36,7 +43,10 @@ export default function InvitationPage() {
         setIsLoading(false)
       } catch (err) {
         console.error('Auth check failed', err)
-        router.push('/')
+        toast.error('Connection error', {
+          description: 'Unable to verify your session',
+        })
+        setTimeout(() => router.push('/'), 1500)
       }
     }
 
@@ -46,6 +56,15 @@ export default function InvitationPage() {
   if (isLoading) {
     return (
       <div className="w-screen h-screen bg-black flex items-center justify-center">
+        <Toaster 
+          position="top-center" 
+          richColors 
+          toastOptions={{
+            style: {
+              fontFamily: 'var(--font-eb-garamond)',
+            },
+          }}
+        />
         <div className="text-white font-oswald text-xl animate-pulse">
           Loading Invitation...
         </div>

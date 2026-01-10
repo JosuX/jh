@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { Html5Qrcode, Html5QrcodeResult } from "html5-qrcode";
+import { Toaster, toast } from "sonner";
 
 const AdminScanPage = () => {
   useEffect(() => {
@@ -26,14 +27,24 @@ const AdminScanPage = () => {
         const data = await response.json();
         console.log("Backend Response:", data);
         
-        // Provide visual feedback (optional)
+        // Provide visual feedback with toast
         if (data.success) {
-          alert(`Success: ${data.message}`);
+          toast.success(data.message, {
+            description: `Guest Code: ${data.guest?.code || decodedText}`,
+            duration: 4000,
+          });
         } else {
-          alert(`Error: ${data.message || "Guest not found"}`);
+          toast.error(data.message || "Guest not found", {
+            description: `Scanned: ${decodedText}`,
+            duration: 4000,
+          });
         }
       } catch (error) {
         console.error("Error sending scan to backend:", error);
+        toast.error("Network Error", {
+          description: "Failed to connect to server",
+          duration: 4000,
+        });
       }
     };
 
@@ -64,6 +75,17 @@ const AdminScanPage = () => {
 
   return (
     <div className="fixed inset-0 w-full h-screen overflow-hidden font-eb-garamond text-[#4a4a4a]">
+      {/* Toast Notifications */}
+      <Toaster 
+        position="top-center" 
+        richColors 
+        toastOptions={{
+          style: {
+            fontFamily: 'var(--font-eb-garamond)',
+          },
+        }}
+      />
+      
       {/* Video Background with Overlay */}
       <div className="absolute inset-0 z-0">
         <video

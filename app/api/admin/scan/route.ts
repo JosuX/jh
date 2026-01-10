@@ -36,14 +36,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Example action: Mark as entered if not already
+    // Example action: Mark as in venue if not already
     let message = `Guest found: ${guest.name}`;
-    if (guest.status !== GuestStatus.ENTERED) {
-      guest.status = GuestStatus.ENTERED;
+    if (guest.status !== GuestStatus.IN_VENUE) {
+      guest.status = GuestStatus.IN_VENUE;
       await guest.save();
-      message = `Guest ${guest.name} marked as ENTERED`;
+      message = `${guest.name} is now IN VENUE`;
     } else {
-      message = `Guest ${guest.name} was already marked as ENTERED`;
+      message = `${guest.name} is already IN VENUE`;
     }
 
     return NextResponse.json({

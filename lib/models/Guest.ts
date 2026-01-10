@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose'
 
 export enum GuestStatus {
   PENDING = 'pending',
-  ENTERED = 'entered',
+  IN_VENUE = 'in_venue',
 }
 
 export interface IGuest extends Document {
