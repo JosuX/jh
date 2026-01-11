@@ -8,7 +8,6 @@ import InvitationContent from './InvitationContent'
 export default function InvitationPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const [guestName, setGuestName] = useState('')
 
   useEffect(() => {
     const validate = async () => {
@@ -38,8 +37,7 @@ export default function InvitationPage() {
           return
         }
 
-        const data = await response.json()
-        setGuestName(data.guest.name)
+        await response.json()
         setIsLoading(false)
       } catch (err) {
         console.error('Auth check failed', err)
@@ -55,7 +53,7 @@ export default function InvitationPage() {
 
   if (isLoading) {
     return (
-      <div className="w-screen h-screen bg-black flex items-center justify-center">
+      <main className="w-screen h-screen bg-black flex items-center justify-center">
         <Toaster 
           position="top-center" 
           richColors 
@@ -65,12 +63,12 @@ export default function InvitationPage() {
             },
           }}
         />
-        <div className="text-white font-oswald text-xl animate-pulse">
+        <p className="text-white font-oswald text-xl animate-pulse" aria-live="polite">
           Loading Invitation...
-        </div>
-      </div>
+        </p>
+      </main>
     )
   }
 
-  return <InvitationContent guestName={guestName} />
+  return <InvitationContent />
 }

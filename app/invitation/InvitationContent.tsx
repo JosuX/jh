@@ -4,18 +4,16 @@ import React from "react";
 import HeroSection from "./components/HeroSection";
 import InvitationMessage from "./components/InvitationMessage";
 import AboutTheWedding from "./components/AboutTheWedding";
+import DressCode from "./components/DressCode";
 
-interface InvitationContentProps {
-    guestName: string;
-}
-
-const InvitationContent = ({ guestName }: InvitationContentProps) => {
+const InvitationContent = () => {
     return (
-        <div className="flex flex-col items-center justify-center">
+        <main className="flex flex-col items-center justify-center">
             <HeroSection />
             <InvitationMessage />
             <AboutTheWedding />
-        </div>
+            <DressCode/>
+        </main>
     );
 };
 

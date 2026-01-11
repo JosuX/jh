@@ -57,7 +57,7 @@ const AboutTheWedding = () => {
                 <div className="flex flex-row items-stretch">
                     <div className="w-1/2 flex flex-col items-center justify-center py-20">
                         <div className="flex flex-col items-center">
-                            <div>
+                            <figure>
                                 <Image
                                     src="/Date Design 2.png"
                                     alt="Wedding Date"
@@ -66,16 +66,17 @@ const AboutTheWedding = () => {
                                     className="w-[500px] h-auto"
                                     priority
                                 />
-                            </div>
-                            <div className="font-italianno text-[clamp(35px,4.16vw,80px)] tracking-widest px-[clamp(20px,8vw,160px)] text-center mb-16">
+                            </figure>
+                            <h2 className="font-italianno text-[clamp(35px,4.16vw,80px)] tracking-widest px-[clamp(20px,8vw,160px)] text-center mb-16">
                                 About The Wedding
-                            </div>
+                            </h2>
                             <div className="justify-center text-center font-oswald text-2xl font-light text-white tracking-[0.2rem]">
-                                Date & Time
-                                <br />
-                                March 7, 2026 - SATURDAY | 4:00 PM
+                                <h3>Date & Time</h3>
+                                <time dateTime="2026-03-07T16:00:00+08:00">
+                                    March 7, 2026 - SATURDAY | 4:00 PM
+                                </time>
                             </div>
-                            <div className="mt-8 w-full max-w-[603px]">
+                            <figure className="mt-8 w-full max-w-[603px]">
                                 <Image
                                     src="/Line 1.svg"
                                     alt="Decorative Line"
@@ -83,60 +84,46 @@ const AboutTheWedding = () => {
                                     height={3}
                                     className="w-full h-auto"
                                 />
-                            </div>
-                            <div className="my-8 justify-center text-center font-italianno text-3xl text-white tracking-[0.05rem]">
+                            </figure>
+                            <p className="my-8 justify-center text-center font-italianno text-3xl text-white tracking-[0.05rem]">
                                 Counting down to a day blessed by Jehovah!
-                            </div>
+                            </p>
                             <div className="w-full max-w-[350px]">
-                                <div className="grid grid-cols-7 text-center font-big-shoulders-inline text-white">
+                                <div className="grid grid-cols-7 text-center font-big-shoulders-inline text-white" role="timer" aria-live="polite">
                                     {/* Time Line */}
-                                    <div className="text-4xl tracking-widest">
+                                    <span className="text-4xl tracking-widest" aria-label={`${timeLeft.days} days`}>
                                         {timeLeft.days}
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
-                                        :
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
+                                    </span>
+                                    <span className="text-4xl tracking-widest" aria-hidden="true">:</span>
+                                    <span className="text-4xl tracking-widest" aria-label={`${timeLeft.hours} hours`}>
                                         {timeLeft.hours
                                             .toString()
                                             .padStart(2, "0")}
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
-                                        :
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
+                                    </span>
+                                    <span className="text-4xl tracking-widest" aria-hidden="true">:</span>
+                                    <span className="text-4xl tracking-widest" aria-label={`${timeLeft.minutes} minutes`}>
                                         {timeLeft.minutes
                                             .toString()
                                             .padStart(2, "0")}
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
-                                        :
-                                    </div>
-                                    <div className="text-4xl tracking-widest">
+                                    </span>
+                                    <span className="text-4xl tracking-widest" aria-hidden="true">:</span>
+                                    <span className="text-4xl tracking-widest" aria-label={`${timeLeft.seconds} seconds`}>
                                         {timeLeft.seconds
                                             .toString()
                                             .padStart(2, "0")}
-                                    </div>
+                                    </span>
 
                                     {/* Labels Line */}
-                                    <div className="text-sm tracking-widest uppercase">
-                                        Days
-                                    </div>
-                                    <div></div>
-                                    <div className="text-sm tracking-widest uppercase">
-                                        Hrs
-                                    </div>
-                                    <div></div>
-                                    <div className="text-sm tracking-widest uppercase">
-                                        Mins
-                                    </div>
-                                    <div></div>
-                                    <div className="text-sm tracking-widest uppercase">
-                                        Sec
-                                    </div>
+                                    <span className="text-sm tracking-widest uppercase">Days</span>
+                                    <span aria-hidden="true"></span>
+                                    <span className="text-sm tracking-widest uppercase">Hrs</span>
+                                    <span aria-hidden="true"></span>
+                                    <span className="text-sm tracking-widest uppercase">Mins</span>
+                                    <span aria-hidden="true"></span>
+                                    <span className="text-sm tracking-widest uppercase">Sec</span>
                                 </div>
                             </div>
-                            <div className="my-8 w-full max-w-[603px]">
+                            <figure className="my-8 w-full max-w-[603px]">
                                 <Image
                                     src="/Line 1.svg"
                                     alt="Decorative Line"
@@ -144,12 +131,12 @@ const AboutTheWedding = () => {
                                     height={3}
                                     className="w-full h-auto"
                                 />
-                            </div>
-                            <div className="mb-8 justify-center text-center font-oswald text-2xl font-light text-white tracking-[0.2rem]">
+                            </figure>
+                            <address className="mb-8 justify-center text-center font-oswald text-2xl font-light text-white tracking-[0.2rem] not-italic">
                                 Zion Events Place, Holiday Hills,
                                 <br />
                                 Brgy. San Antonio, San Pedro Laguna
-                            </div>
+                            </address>
                             <a
                                 href="https://maps.app.goo.gl/VVccHo1wBkdRZ9Bn6"
                                 target="_blank"
@@ -161,14 +148,14 @@ const AboutTheWedding = () => {
                         </div>
                     </div>
 
-                    <div className="w-1/2 relative overflow-hidden">
+                    <figure className="w-1/2 relative overflow-hidden">
                         <Image
                             src="/Zions_Place 1.png"
                             alt="Zions Place"
                             fill
                             className="object-cover"
                         />
-                    </div>
+                    </figure>
                 </div>
             </section>
         );
@@ -178,7 +165,7 @@ const AboutTheWedding = () => {
     return (
         <section className="w-full bg-[#1B251E] text-white px-7 sm:px-12 py-14 sm:py-20">
             <div className="flex flex-col items-center text-center">
-                <div>
+                <figure>
                     <Image
                         src="/Date Design 2.png"
                         alt="Wedding Date"
@@ -187,16 +174,17 @@ const AboutTheWedding = () => {
                         className="w-[219px] sm:w-[320px] h-auto"
                         priority
                     />
-                </div>
-                <div className="font-italianno text-[clamp(35px,10vw,50px)] tracking-wider text-center mb-7">
+                </figure>
+                <h2 className="font-italianno text-[clamp(35px,10vw,50px)] tracking-wider text-center mb-7">
                     About The Wedding
-                </div>
+                </h2>
                 <div className="font-oswald text-sm md:text-lg font-light text-white tracking-wider">
-                    Date & Time
-                    <br />
-                    March 7, 2026 - SATURDAY | 4:00 PM
+                    <h3>Date & Time</h3>
+                    <time dateTime="2026-03-07T16:00:00+08:00">
+                        March 7, 2026 - SATURDAY | 4:00 PM
+                    </time>
                 </div>
-                <div className="my-7 w-full max-w-[250px] sm:max-w-[400px]">
+                <figure className="my-7 w-full max-w-[250px] sm:max-w-[400px]">
                     <Image
                         src="/Line 1.svg"
                         alt="Decorative Line"
@@ -204,51 +192,43 @@ const AboutTheWedding = () => {
                         height={3}
                         className="w-full h-auto"
                     />
-                </div>
-                <div className="justify-center text-center font-italianno text-xl sm:text-2xl text-white tracking-[0.05rem]">
+                </figure>
+                <p className="justify-center text-center font-italianno text-xl sm:text-2xl text-white tracking-[0.05rem]">
                     Counting down to a day blessed by Jehovah!
-                </div>
+                </p>
                 <div className="w-full max-w-[280px] sm:max-w-[450px] mb-14">
-                    <div className="grid grid-cols-7 text-center font-big-shoulders-inline text-white">
+                    <div className="grid grid-cols-7 text-center font-big-shoulders-inline text-white" role="timer" aria-live="polite">
                         {/* Time Line */}
-                        <div className="text-3xl sm:text-5xl tracking-widest">
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-label={`${timeLeft.days} days`}>
                             {timeLeft.days}
-                        </div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">:</div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">
+                        </span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-hidden="true">:</span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-label={`${timeLeft.hours} hours`}>
                             {timeLeft.hours.toString().padStart(2, "0")}
-                        </div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">:</div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">
+                        </span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-hidden="true">:</span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-label={`${timeLeft.minutes} minutes`}>
                             {timeLeft.minutes.toString().padStart(2, "0")}
-                        </div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">:</div>
-                        <div className="text-3xl sm:text-5xl tracking-widest">
+                        </span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-hidden="true">:</span>
+                        <span className="text-3xl sm:text-5xl tracking-widest" aria-label={`${timeLeft.seconds} seconds`}>
                             {timeLeft.seconds.toString().padStart(2, "0")}
-                        </div>
+                        </span>
 
                         {/* Labels Line */}
-                        <div className="text-[10px] sm:text-sm tracking-widest uppercase">
-                            Days
-                        </div>
-                        <div></div>
-                        <div className="text-[10px] sm:text-sm tracking-widest uppercase">
-                            Hrs
-                        </div>
-                        <div></div>
-                        <div className="text-[10px] sm:text-sm tracking-widest uppercase">
-                            Mins
-                        </div>
-                        <div></div>
-                        <div className="text-[10px] sm:text-sm tracking-widest uppercase">
-                            Sec
-                        </div>
+                        <span className="text-[10px] sm:text-sm tracking-widest uppercase">Days</span>
+                        <span aria-hidden="true"></span>
+                        <span className="text-[10px] sm:text-sm tracking-widest uppercase">Hrs</span>
+                        <span aria-hidden="true"></span>
+                        <span className="text-[10px] sm:text-sm tracking-widest uppercase">Mins</span>
+                        <span aria-hidden="true"></span>
+                        <span className="text-[10px] sm:text-sm tracking-widest uppercase">Sec</span>
                     </div>
                 </div>
-                <div className="font-italianno text-[clamp(35px,10vw,50px)] tracking-wider text-center mb-6">
+                <h3 className="font-italianno text-[clamp(35px,10vw,50px)] tracking-wider text-center mb-6">
                     Ceremony & Reception
-                </div>
-                <div className="mb-6">
+                </h3>
+                <figure className="mb-6">
                     <Image
                         src="/Zions_Place 1.png"
                         alt="Zion Events Place"
@@ -256,12 +236,12 @@ const AboutTheWedding = () => {
                         height={145}
                         className="w-full max-w-[217px] sm:max-w-[350px] h-auto rounded-[10px] shadow-[0px_1px_4px_2px_rgba(223,223,223,0.25)]"
                     />
-                </div>
-                <div className="font-oswald text-sm sm:text-lg font-light text-white tracking-wider mb-6">
+                </figure>
+                <address className="font-oswald text-sm sm:text-lg font-light text-white tracking-wider mb-6 not-italic">
                     Zion Events Place, Holiday Hills, Brgy. San Antonio,
                     <br />
                     San Pedro Laguna
-                </div>
+                </address>
                 <a
                     href="https://maps.app.goo.gl/VVccHo1wBkdRZ9Bn6"
                     target="_blank"

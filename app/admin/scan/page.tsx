@@ -1,16 +1,41 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Html5Qrcode, Html5QrcodeResult } from "html5-qrcode";
 import { Toaster, toast } from "sonner";
 
+const SCAN_COOLDOWN_MS = 3000; // 3 seconds cooldown between scans
+
 const AdminScanPage = () => {
+  const isProcessingRef = useRef(false);
+  const lastScannedRef = useRef<{ code: string; timestamp: number } | null>(null);
+
   useEffect(() => {
     // Initialize the scanner with direct camera control
     const html5QrCode = new Html5Qrcode("reader");
 
     const onScanSuccess = async (decodedText: string, decodedResult: Html5QrcodeResult) => {
+      const now = Date.now();
+      
+      // Check if we're already processing a scan
+      if (isProcessingRef.current) {
+        return;
+      }
+
+      // Check if this is the same code scanned recently (within cooldown period)
+      if (
+        lastScannedRef.current &&
+        lastScannedRef.current.code === decodedText &&
+        now - lastScannedRef.current.timestamp < SCAN_COOLDOWN_MS
+      ) {
+        return;
+      }
+
+      // Mark as processing
+      isProcessingRef.current = true;
+      lastScannedRef.current = { code: decodedText, timestamp: now };
+
       // Console log the content as requested
       console.log("QR Code Scanned:", decodedText);
       console.log("Full Result:", decodedResult);
@@ -45,6 +70,11 @@ const AdminScanPage = () => {
           description: "Failed to connect to server",
           duration: 4000,
         });
+      } finally {
+        // Release processing lock after a short delay
+        setTimeout(() => {
+          isProcessingRef.current = false;
+        }, 500);
       }
     };
 

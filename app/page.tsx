@@ -84,7 +84,7 @@ const Page = () => {
     };
 
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <main className="relative w-full h-screen overflow-hidden">
             {/* Video Background */}
             <video
                 autoPlay
@@ -92,14 +92,15 @@ const Page = () => {
                 muted
                 playsInline
                 className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                aria-label="Wedding video background"
             >
                 <source src="/Wedding Video Banner.mp4" type="video/mp4" />
             </video>
 
             {/* Content Layer */}
-            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4">
+            <section className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4">
                 {/* Logo Container */}
-                <div className="w-[91px] md:hidden transition-all duration-300">
+                <header className="w-[91px] md:hidden transition-all duration-300">
                     <Image
                         src="/Logo Initial - Colored BG 1.png"
                         alt="J&H Wedding Logo"
@@ -108,10 +109,10 @@ const Page = () => {
                         className="w-full h-auto"
                         priority
                     />
-                </div>
+                </header>
 
                 {/* White Card Container */}
-                <div className="bg-white rounded-[10px] shadow-[0_1px_4px_0_#F9F9F9] px-11 md:px-16 py-8 md:py-14 w-[clamp(304px,90%,530px)] min-h-[221px] md:min-h-[315px] flex flex-col items-center justify-center">
+                <article className="bg-white rounded-[10px] shadow-[0_1px_4px_0_#F9F9F9] px-11 md:px-16 py-8 md:py-14 w-[clamp(304px,90%,530px)] min-h-[221px] md:min-h-[315px] flex flex-col items-center justify-center">
                     {/* Title */}
                     <h1 className="text-center mb-3 font-eb-garamond text-[clamp(1.125rem,3vw,1.75rem)] font-bold text-[#4a4a4a]">
                         {!guestInfo
@@ -143,11 +144,12 @@ const Page = () => {
                                 placeholder=""
                                 className="w-full max-w-[298px] h-[clamp(28px,8vw,35px)] px-4 border border-[#7D7D7D] rounded-[5px] font-eb-garamond text-[clamp(0.75rem,3vw,0.875rem)] text-[#4a4a4a] bg-white outline-none transition-colors duration-200 focus:border-[#9ca3af]"
                                 disabled={isLoading || !!guestInfo}
+                                aria-label="Guest code input"
                             />
 
                             {/* Error Message */}
                             {error && (
-                                <p className="text-red-500 text-xs text-center">
+                                <p className="text-red-500 text-xs text-center" role="alert">
                                     {error}
                                 </p>
                             )}
@@ -173,15 +175,15 @@ const Page = () => {
                         </button>
                     )}
 
-                    <div className="font-eb-garamond italic text-center text-xs text-[#1E61AE] mt-7 w-auto md:w-[286px]">
+                    <p className="font-eb-garamond italic text-center text-xs text-[#1E61AE] mt-7 w-auto md:w-[286px]">
                         Reminder: Your invitation is saved to this device and
-                        won’t open on other devices.
-                    </div>
-                </div>
-            </div>
+                        won't open on other devices.
+                    </p>
+                </article>
+            </section>
 
             {/* Desktop Bottom Right Logo */}
-            <div className="hidden md:block absolute bottom-10 right-10 z-20 opacity-90 hover:opacity-100 transition-opacity duration-300">
+            <aside className="hidden md:block absolute bottom-10 right-10 z-20 opacity-90 hover:opacity-100 transition-opacity duration-300">
                 <Image
                     src="/JH WEDDING LOGO - WHITE.png"
                     alt="J&H Wedding Logo"
@@ -190,8 +192,8 @@ const Page = () => {
                     className="w-[310px] h-auto"
                     priority
                 />
-            </div>
-        </div>
+            </aside>
+        </main>
     );
 };
 
