@@ -163,6 +163,15 @@ const AboutTheWedding = () => {
 
     // Mobile Version
     return (
+        <>
+        <figure className="w-full relative aspect-4/3">
+            <Image
+                src="/Zions_Place 1.png"
+                alt="Zions Place"
+                fill
+                className="object-cover"
+            />
+        </figure>
         <section className="w-full bg-[#1B251E] text-white px-7 sm:px-12 py-14 sm:py-20">
             <div className="flex flex-col items-center text-center">
                 <figure>
@@ -196,7 +205,7 @@ const AboutTheWedding = () => {
                 <p className="justify-center text-center font-italianno text-xl sm:text-2xl text-white tracking-[0.05rem]">
                     Counting down to a day blessed by Jehovah!
                 </p>
-                <div className="w-full max-w-[280px] sm:max-w-[450px] mb-14">
+                <div className="w-full max-w-[280px] sm:max-w-[450px]">
                     <div className="grid grid-cols-7 text-center font-big-shoulders-inline text-white" role="timer" aria-live="polite">
                         {/* Time Line */}
                         <span className="text-3xl sm:text-5xl tracking-widest" aria-label={`${timeLeft.days} days`}>
@@ -225,16 +234,13 @@ const AboutTheWedding = () => {
                         <span className="text-[10px] sm:text-sm tracking-widest uppercase">Sec</span>
                     </div>
                 </div>
-                <h3 className="font-italianno text-[clamp(35px,10vw,50px)] tracking-wider text-center mb-6">
-                    Ceremony & Reception
-                </h3>
-                <figure className="mb-6">
+                <figure className="my-7 w-full max-w-[250px] sm:max-w-[400px]">
                     <Image
-                        src="/Zions_Place 1.png"
-                        alt="Zion Events Place"
-                        width={217}
-                        height={145}
-                        className="w-full max-w-[217px] sm:max-w-[350px] h-auto rounded-[10px] shadow-[0px_1px_4px_2px_rgba(223,223,223,0.25)]"
+                        src="/Line 1.svg"
+                        alt="Decorative Line"
+                        width={250}
+                        height={3}
+                        className="w-full h-auto"
                     />
                 </figure>
                 <address className="font-oswald text-sm sm:text-lg font-light text-white tracking-wider mb-6 not-italic">
@@ -252,6 +258,7 @@ const AboutTheWedding = () => {
                 </a>
             </div>
         </section>
+        </>
     );
 };
 

@@ -10,6 +10,7 @@ export interface IGuest extends Document {
   name: string
   code: string
   status: GuestStatus | null
+  rsvpConfirmed: boolean
   updatedAt: Date
   createdAt: Date
 }
@@ -32,6 +33,10 @@ const GuestSchema = new Schema<IGuest>(
       type: String,
       enum: Object.values(GuestStatus),
       default: null,
+    },
+    rsvpConfirmed: {
+      type: Boolean,
+      default: false,
     },
   },
   {
