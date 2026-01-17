@@ -205,10 +205,7 @@ const RSVP = () => {
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <canvas ref={canvasRef} />
                     </div>
-                    
-                    <p className="text-sm opacity-80">
-                        Guest Code: <span className="font-bold">{guestInfo.code}</span>
-                    </p>
+                
 
                     <button
                         onClick={handleDownloadQR}
