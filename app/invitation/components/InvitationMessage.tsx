@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const InvitationMessage = () => {
     return (
-        <section className="w-screen flex flex-col items-center justify-center bg-white py-16 md:py-28 px-[clamp(32px,15vw,288px)]">
+        <section className="w-screen flex flex-col items-center justify-center bg-white py-28 md:py-28 px-[clamp(32px,15vw,288px)]">
             <figure>
                 <Image
                     src="/Drawing - Ribbon wRings.png"
