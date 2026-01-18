@@ -21,7 +21,7 @@ const InvitationMessage = () => {
             <div className="text-center text-[clamp(12px,2vw,26px)] text-[#2F2F2F] font-oswald tracking-wider font-light">
                 <p className="mb-4">
                     With thankful hearts, Jofer and Hope invite you to celebrate
-                    a day made possible by Jehovah's guidance and love.
+                    a day made possible by Jehovah&apos;s guidance and love.
                 </p>
                 <p className="mb-4">
                     Our story began with friendship and has grown into a

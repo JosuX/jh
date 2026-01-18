@@ -100,12 +100,12 @@ const Page = () => {
             {/* Content Layer */}
             <section className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4">
                 {/* Logo Container */}
-                <header className="w-[200px] md:hidden transition-all duration-300">
+                <header className="w-[100px] md:hidden transition-all duration-300">
                     <Image
                         src="/JH WEDDING LOGO - WHITE.png"
                         alt="J&H Wedding Logo"
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={100}
                         className="w-full h-auto"
                         priority
                     />
