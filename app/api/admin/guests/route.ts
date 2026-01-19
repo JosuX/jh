@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Guest from '@/lib/models/Guest';
+import Session from '@/lib/models/Session';
 
 // GET: Fetch all guests with their status
 export async function GET() {
@@ -83,6 +84,45 @@ export async function PATCH(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error resetting guest status:', error);
+    return NextResponse.json(
+      { success: false, message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE: Remove a guest's session (logout)
+export async function DELETE(request: NextRequest) {
+  try {
+    await dbConnect();
+
+    const { guestId } = await request.json();
+
+    if (!guestId) {
+      return NextResponse.json(
+        { success: false, message: 'Guest ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Delete all sessions for this guest
+    const result = await Session.deleteMany({ guestId });
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No active sessions found',
+        deletedCount: 0,
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Removed ${result.deletedCount} session(s)`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    console.error('Error removing guest session:', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

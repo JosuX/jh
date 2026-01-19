@@ -123,18 +123,6 @@ const Page = () => {
             {showMessengerBlock && (
                 <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
                     <div className="bg-white rounded-[15px] shadow-2xl p-8 w-full max-w-[380px] text-center">
-                        {/* Logo */}
-                        <div className="flex justify-center mb-6">
-                            <Image
-                                src="/Logo Initial - Colored BG 1.png"
-                                alt="J&H Wedding Logo"
-                                width={70}
-                                height={70}
-                                className="w-[70px] h-auto"
-                                priority
-                            />
-                        </div>
-
                         {/* Warning Icon */}
                         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-100 flex items-center justify-center">
                             <svg 

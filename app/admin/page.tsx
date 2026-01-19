@@ -270,6 +270,49 @@ const AdminScanPage = () => {
     }
   };
 
+  const handleRemoveSession = async (guestId: string, guestName: string) => {
+    if (!confirm(`Remove session for ${guestName}? They will need to re-enter their guest code.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/guests", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guestId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        if (data.deletedCount > 0) {
+          toast.success("Session removed", {
+            description: `${guestName} will need to re-enter their code`,
+            duration: 3000,
+          });
+        } else {
+          toast.info("No active session", {
+            description: `${guestName} doesn't have an active session`,
+            duration: 3000,
+          });
+        }
+      } else {
+        toast.error("Failed to remove session", {
+          description: data.message,
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      console.error("Error removing session:", error);
+      toast.error("Network Error", {
+        description: "Failed to connect to server",
+        duration: 3000,
+      });
+    }
+  };
+
   // Login Screen
   if (!isAuthenticated) {
     return (
@@ -582,16 +625,24 @@ const AdminScanPage = () => {
                           {new Date(guest.updatedAt).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">
-                          {guest.status === "in_venue" ? (
+                          <div className="flex items-center gap-2">
+                            {guest.status === "in_venue" && (
+                              <button
+                                onClick={() => handleResetStatus(guest.id, guest.name)}
+                                className="px-3 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
+                                title="Reset venue check-in status"
+                              >
+                                Reset
+                              </button>
+                            )}
                             <button
-                              onClick={() => handleResetStatus(guest.id, guest.name)}
-                              className="px-3 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
+                              onClick={() => handleRemoveSession(guest.id, guest.name)}
+                              className="px-3 py-1 text-xs font-medium text-orange-600 bg-orange-50 hover:bg-orange-100 rounded-full transition-colors"
+                              title="Remove session (guest must re-enter code)"
                             >
-                              Reset
+                              Logout
                             </button>
-                          ) : (
-                            <span className="text-xs text-gray-400">—</span>
-                          )}
+                          </div>
                         </td>
                       </tr>
                     ))
