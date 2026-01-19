@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Toaster, toast } from 'sonner'
 import InvitationContent from './InvitationContent'
@@ -64,14 +63,7 @@ export default function InvitationPage() {
             },
           }}
         />
-        <Image 
-          src="/Logo Initial - Colored BG (1) 1.png" 
-          alt="J&H Wedding Logo" 
-          width={96}
-          height={96}
-          className="w-24 h-24 mb-8 animate-pulse"
-        />
-        <p className="text-white font-italianno text-5xl tracking-wide" aria-live="polite">
+        <p className="text-white font-italianno text-5xl tracking-wide animate-pulse" aria-live="polite">
           Loading Invitation...
         </p>
         <p className="text-white/60 font-oswald text-xs tracking-[0.3em] mt-4 uppercase">
