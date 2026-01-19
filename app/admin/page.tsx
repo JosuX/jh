@@ -28,7 +28,12 @@ type Tab = "scan" | "dashboard";
 type SortColumn = "name" | "code" | "status" | "updatedAt";
 type SortDirection = "asc" | "desc";
 
+const ADMIN_PASSWORD = "JH123";
+
 const AdminScanPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [guests, setGuests] = useState<Guest[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
@@ -58,12 +63,32 @@ const AdminScanPage = () => {
     }
   }, []);
 
+  // Check for existing authentication on mount
+  useEffect(() => {
+    const isAuth = sessionStorage.getItem("admin_authenticated");
+    if (isAuth === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem("admin_authenticated", "true");
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+      setPasswordInput("");
+    }
+  };
+
   // Fetch guests when switching to dashboard tab
   useEffect(() => {
-    if (activeTab === "dashboard") {
+    if (activeTab === "dashboard" && isAuthenticated) {
       fetchGuests();
     }
-  }, [activeTab, fetchGuests]);
+  }, [activeTab, fetchGuests, isAuthenticated]);
 
   useEffect(() => {
     if (activeTab !== "scan") return;
@@ -197,6 +222,139 @@ const AdminScanPage = () => {
     }
     return <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">Pending</span>;
   };
+
+  const handleResetStatus = async (guestId: string, guestName: string) => {
+    if (!confirm(`Reset venue status for ${guestName}? They will be able to scan in again.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/guests", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guestId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Status reset successfully", {
+          description: `${guestName} can now scan in again`,
+          duration: 3000,
+        });
+        // Update local state
+        setGuests(guests.map(g => 
+          g.id === guestId ? { ...g, status: null } : g
+        ));
+        // Update stats
+        if (stats) {
+          setStats({
+            ...stats,
+            inVenue: stats.inVenue - 1,
+          });
+        }
+      } else {
+        toast.error("Failed to reset status", {
+          description: data.message,
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      console.error("Error resetting status:", error);
+      toast.error("Network Error", {
+        description: "Failed to connect to server",
+        duration: 3000,
+      });
+    }
+  };
+
+  // Login Screen
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 w-full h-screen overflow-hidden font-eb-garamond text-[#4a4a4a]">
+        {/* Video Background with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/Wedding Video Banner.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+
+        {/* Login Form */}
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-[15px] shadow-2xl p-8 w-full max-w-[360px]">
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/Logo Initial - Colored BG 1.png"
+                alt="J&H Wedding Logo"
+                width={80}
+                height={80}
+                className="w-[80px] h-auto"
+                priority
+              />
+            </div>
+
+            <div className="text-center mb-6">
+              <h1 className="text-[1.25rem] md:text-[1.5rem] font-bold uppercase tracking-[0.15em] mb-1">
+                Admin Access
+              </h1>
+              <div className="h-px w-12 bg-[#7A8850] mx-auto mb-2"></div>
+              <p className="text-[0.75rem] font-medium opacity-70 uppercase tracking-widest">
+                Enter password to continue
+              </p>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    setPasswordError(false);
+                  }}
+                  placeholder="Enter password"
+                  className={`w-full px-4 py-3 border-2 rounded-lg text-center text-sm tracking-wider focus:outline-none transition-colors ${
+                    passwordError 
+                      ? "border-red-400 bg-red-50 focus:border-red-500" 
+                      : "border-gray-200 focus:border-[#7A8850]"
+                  }`}
+                  autoFocus
+                />
+                {passwordError && (
+                  <p className="text-red-500 text-xs text-center mt-2 font-medium">
+                    Incorrect password. Please try again.
+                  </p>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#7A8850] text-white rounded-lg font-bold uppercase tracking-wider text-sm hover:bg-[#6b7746] transition-colors"
+              >
+                Enter
+              </button>
+            </form>
+
+            <button
+              onClick={() => window.history.back()}
+              className="mt-6 w-full text-center text-[0.75rem] font-medium uppercase tracking-widest text-gray-500 hover:text-[#7A8850] transition-colors"
+            >
+              ← Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 w-full h-screen overflow-hidden font-eb-garamond text-[#4a4a4a]">
@@ -396,18 +554,21 @@ const AdminScanPage = () => {
                         </span>
                       </span>
                     </th>
+                    <th className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {isLoading ? (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
                         Loading guests...
                       </td>
                     </tr>
                   ) : filteredGuests.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
                         {searchQuery ? "No guests found matching your search" : "No guests yet"}
                       </td>
                     </tr>
@@ -419,6 +580,18 @@ const AdminScanPage = () => {
                         <td className="px-4 py-3">{getStatusBadge(guest)}</td>
                         <td className="px-4 py-3 text-gray-500 text-xs hidden md:table-cell">
                           {new Date(guest.updatedAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-3">
+                          {guest.status === "in_venue" ? (
+                            <button
+                              onClick={() => handleResetStatus(guest.id, guest.name)}
+                              className="px-3 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
+                            >
+                              Reset
+                            </button>
+                          ) : (
+                            <span className="text-xs text-gray-400">—</span>
+                          )}
                         </td>
                       </tr>
                     ))
