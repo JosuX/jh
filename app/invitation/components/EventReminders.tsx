@@ -2,7 +2,7 @@ import React from "react";
 
 const EventReminders = () => {
     return (
-        <div className="w-full bg-[#282828] py-12 justify-center items-center text-center flex flex-col px-10">
+        <div className="w-[clamp(295px,75%,750px)] bg-[#282828] py-12 justify-center items-center text-center flex flex-col px-10">
             <div className="text-white font-italianno text-[clamp(35px,8vw,80px)] tracking-wider">
                 Event Reminders!
             </div>
