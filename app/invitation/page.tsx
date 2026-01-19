@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Toaster, toast } from 'sonner'
 import InvitationContent from './InvitationContent'
@@ -53,7 +54,7 @@ export default function InvitationPage() {
 
   if (isLoading) {
     return (
-      <main className="w-screen h-screen bg-black flex items-center justify-center">
+      <main className="w-screen h-screen bg-black flex flex-col items-center justify-center">
         <Toaster 
           position="top-center" 
           richColors 
@@ -63,8 +64,18 @@ export default function InvitationPage() {
             },
           }}
         />
-        <p className="text-white font-oswald text-xl animate-pulse" aria-live="polite">
+        <Image 
+          src="/Logo Initial - Colored BG (1) 1.png" 
+          alt="J&H Wedding Logo" 
+          width={96}
+          height={96}
+          className="w-24 h-24 mb-8 animate-pulse"
+        />
+        <p className="text-white font-italianno text-5xl tracking-wide" aria-live="polite">
           Loading Invitation...
+        </p>
+        <p className="text-white/60 font-oswald text-xs tracking-[0.3em] mt-4 uppercase">
+          Please wait
         </p>
       </main>
     )
