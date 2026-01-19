@@ -138,7 +138,11 @@ const Page = () => {
                                 type="text"
                                 value={guestCode}
                                 onChange={(e) => {
-                                    setGuestCode(e.target.value);
+                                    // Only allow uppercase alphanumeric characters
+                                    const sanitized = e.target.value
+                                        .toUpperCase()
+                                        .replace(/[^A-Z0-9]/g, '');
+                                    setGuestCode(sanitized);
                                     setError(null);
                                 }}
                                 placeholder=""
@@ -177,7 +181,7 @@ const Page = () => {
 
                     <p className="font-eb-garamond italic text-center text-xs text-[#1E61AE] mt-7 w-auto md:w-[286px]">
                         Reminder: Your invitation is saved to this device and
-                        won't open on other devices.
+                        won&apos;t open on other devices.
                     </p>
                 </article>
             </section>
