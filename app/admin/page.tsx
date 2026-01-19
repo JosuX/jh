@@ -25,13 +25,17 @@ interface Stats {
 }
 
 type Tab = "scan" | "dashboard";
+type SortColumn = "name" | "code" | "status" | "updatedAt";
+type SortDirection = "asc" | "desc";
 
 const AdminScanPage = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("scan");
+  const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [guests, setGuests] = useState<Guest[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState<SortColumn>("name");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   
   const isProcessingRef = useRef(false);
   const lastScannedRef = useRef<{ code: string; timestamp: number } | null>(null);
@@ -144,10 +148,45 @@ const AdminScanPage = () => {
     };
   }, [activeTab]);
 
-  const filteredGuests = guests.filter(guest => 
-    guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    guest.code.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+  const getGuestSortValue = (guest: Guest, column: SortColumn): string | number => {
+    switch (column) {
+      case "name":
+        return guest.name.toLowerCase();
+      case "code":
+        return guest.code.toLowerCase();
+      case "status":
+        if (guest.status === "in_venue") return 0;
+        if (guest.rsvpConfirmed) return 1;
+        return 2;
+      case "updatedAt":
+        return new Date(guest.updatedAt).getTime();
+      default:
+        return guest.name.toLowerCase();
+    }
+  };
+
+  const filteredGuests = guests
+    .filter(guest => 
+      guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guest.code.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      const aValue = getGuestSortValue(a, sortColumn);
+      const bValue = getGuestSortValue(b, sortColumn);
+      
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
 
   const getStatusBadge = (guest: Guest) => {
     if (guest.status === "in_venue") {
@@ -313,10 +352,50 @@ const AdminScanPage = () => {
               <table className="w-full text-sm">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600">Name</th>
-                    <th className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600">Code</th>
-                    <th className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600">Status</th>
-                    <th className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600 hidden md:table-cell">Updated</th>
+                    <th 
+                      onClick={() => handleSort("name")}
+                      className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors select-none"
+                    >
+                      <span className="flex items-center gap-1">
+                        Name
+                        <span className={`transition-opacity ${sortColumn === "name" ? "opacity-100" : "opacity-0"}`}>
+                          {sortDirection === "asc" ? "↑" : "↓"}
+                        </span>
+                      </span>
+                    </th>
+                    <th 
+                      onClick={() => handleSort("code")}
+                      className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors select-none"
+                    >
+                      <span className="flex items-center gap-1">
+                        Code
+                        <span className={`transition-opacity ${sortColumn === "code" ? "opacity-100" : "opacity-0"}`}>
+                          {sortDirection === "asc" ? "↑" : "↓"}
+                        </span>
+                      </span>
+                    </th>
+                    <th 
+                      onClick={() => handleSort("status")}
+                      className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors select-none"
+                    >
+                      <span className="flex items-center gap-1">
+                        Status
+                        <span className={`transition-opacity ${sortColumn === "status" ? "opacity-100" : "opacity-0"}`}>
+                          {sortDirection === "asc" ? "↑" : "↓"}
+                        </span>
+                      </span>
+                    </th>
+                    <th 
+                      onClick={() => handleSort("updatedAt")}
+                      className="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors select-none hidden md:table-cell"
+                    >
+                      <span className="flex items-center gap-1">
+                        Updated
+                        <span className={`transition-opacity ${sortColumn === "updatedAt" ? "opacity-100" : "opacity-0"}`}>
+                          {sortDirection === "asc" ? "↑" : "↓"}
+                        </span>
+                      </span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
