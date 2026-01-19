@@ -191,9 +191,9 @@ const Page = () => {
                 <Image
                     src="/JH WEDDING LOGO - WHITE.png"
                     alt="J&H Wedding Logo"
-                    width={310}
-                    height={310}
-                    className="w-[310px] h-auto"
+                    width={180}
+                    height={180}
+                    className="w-[180px] h-auto"
                     priority
                 />
             </aside>
