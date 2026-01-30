@@ -7,6 +7,13 @@ import { Toaster, toast } from "sonner";
 
 const SCAN_COOLDOWN_MS = 3000;
 
+// Wedding day: March 6, 2026 4PM PHT (UTC+8)
+const WEDDING_DATE = new Date('2026-03-06T16:00:00+08:00');
+
+function isWeddingDay(): boolean {
+  return new Date() >= WEDDING_DATE;
+}
+
 interface Guest {
   id: string;
   name: string;
@@ -130,10 +137,17 @@ const AdminScanPage = () => {
         console.log("Backend Response:", data);
         
         if (data.success) {
-          toast.success(data.message, {
-            description: `Guest Code: ${data.guest?.code || decodedText}`,
-            duration: 4000,
-          });
+          if (data.isSimulation) {
+            toast.warning(data.message, {
+              description: `Guest Code: ${data.guest?.code || decodedText} (Status not saved)`,
+              duration: 4000,
+            });
+          } else {
+            toast.success(data.message, {
+              description: `Guest Code: ${data.guest?.code || decodedText}`,
+              duration: 4000,
+            });
+          }
         } else {
           toast.error(data.message || "Guest not found", {
             description: `Scanned: ${decodedText}`,
@@ -466,6 +480,17 @@ const AdminScanPage = () => {
         {/* Scan Tab Content */}
         {activeTab === "scan" && (
           <div className="bg-white/95 backdrop-blur-sm rounded-[15px] shadow-2xl p-5 md:p-8 w-full max-w-[400px] flex flex-col items-center">
+            {/* Simulation Mode Banner */}
+            {!isWeddingDay() && (
+              <div className="w-full mb-4 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-center gap-3">
+                <span className="text-amber-600 text-lg">⚠️</span>
+                <div>
+                  <p className="text-amber-800 font-bold text-xs uppercase tracking-wider">Simulation Mode</p>
+                  <p className="text-amber-600 text-[0.65rem]">Scans won&apos;t update status until March 6, 2026 4PM</p>
+                </div>
+              </div>
+            )}
+            
             <div className="text-center mb-4">
               <h1 className="text-[1.25rem] md:text-[1.5rem] font-bold uppercase tracking-[0.15em] mb-1">
                 Scan Guest&apos;s QR
@@ -484,15 +509,20 @@ const AdminScanPage = () => {
             </div>
             
             <div className="mt-4 flex flex-col items-center gap-1">
-              <div className="flex items-center gap-2 text-[#7A8850]">
+              <div className={`flex items-center gap-2 ${isWeddingDay() ? "text-[#7A8850]" : "text-amber-600"}`}>
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7A8850] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7A8850]"></span>
+                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isWeddingDay() ? "bg-[#7A8850]" : "bg-amber-500"} opacity-75`}></span>
+                  <span className={`relative inline-flex rounded-full h-2 w-2 ${isWeddingDay() ? "bg-[#7A8850]" : "bg-amber-500"}`}></span>
                 </span>
-                <p className="text-[0.8rem] font-bold tracking-wide">Ready to Scan</p>
+                <p className="text-[0.8rem] font-bold tracking-wide">
+                  {isWeddingDay() ? "Ready to Scan" : "Simulation Mode"}
+                </p>
               </div>
               <p className="text-center text-[0.7rem] opacity-70 italic max-w-[220px]">
-                Align the QR code within the frame to check in.
+                {isWeddingDay() 
+                  ? "Align the QR code within the frame to check in."
+                  : "Scans will validate guests but won't update status."
+                }
               </p>
             </div>
           </div>

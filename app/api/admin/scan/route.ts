@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Guest, { GuestStatus } from '@/lib/models/Guest';
 
+// Wedding day: March 6, 2026 4PM PHT (UTC+8)
+const WEDDING_DATE = new Date('2026-03-06T16:00:00+08:00');
+
+function isWeddingDay(): boolean {
+  const now = new Date();
+  return now >= WEDDING_DATE;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { decodedText } = await request.json();
@@ -36,23 +44,37 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Example action: Mark as in venue if not already
+    const isLive = isWeddingDay();
     let message = `Guest found: ${guest.name}`;
-    if (guest.status !== GuestStatus.IN_VENUE) {
-      guest.status = GuestStatus.IN_VENUE;
-      await guest.save();
-      message = `${guest.name} is now IN VENUE`;
+    let simulatedStatus = guest.status;
+
+    if (isLive) {
+      // LIVE MODE: Actually update the database
+      if (guest.status !== GuestStatus.IN_VENUE) {
+        guest.status = GuestStatus.IN_VENUE;
+        await guest.save();
+        message = `${guest.name} is now IN VENUE`;
+      } else {
+        message = `${guest.name} is already IN VENUE`;
+      }
     } else {
-      message = `${guest.name} is already IN VENUE`;
+      // SIMULATION MODE: Don't update database, just simulate
+      if (guest.status !== GuestStatus.IN_VENUE) {
+        simulatedStatus = GuestStatus.IN_VENUE;
+        message = `[SIMULATION] ${guest.name} would be marked IN VENUE`;
+      } else {
+        message = `[SIMULATION] ${guest.name} is already IN VENUE`;
+      }
     }
 
     return NextResponse.json({
       success: true,
       message,
+      isSimulation: !isLive,
       guest: {
         name: guest.name,
         code: guest.code,
-        status: guest.status,
+        status: isLive ? guest.status : simulatedStatus,
       },
       decodedText
     });
